@@ -208,12 +208,7 @@ module Pith
     
     # This is a workaround for ruby 1.9.2
     def yaml_parse_error
-      if defined? Psych
-        defined?(Psych::SyntaxError) ? Psych::SyntaxError : SyntaxError
-      else
-        ArgumentError
-      end
-      # YamlParseError = defined?(Psych) ? SyntaxError : ArgumentError
+      defined?(Psych::SyntaxError) ? Psych::SyntaxError : ArgumentError
     end
 
     # Note that the input file has changed, so we'll need to re-load it.
