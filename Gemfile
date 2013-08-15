@@ -8,9 +8,12 @@ group :test do
   gem "cucumber", "~> 1.2.0"
   gem "haml", "~> 3.1.7"
   gem "sass"
-  gem "RedCloth"
-  gem "redcarpet"
   gem "compass"
+  gem "RedCloth"
+  
+  # Last version of redcarpet compatible with ruby 1.8.7 is 2.3.0
+  gem "redcarpet", "#{(RUBY_VERSION == '1.8.7') ? '2.3.0' : '~> 3.0.0' }"
+
   if tilt_version = ENV["TILT_VERSION"]
     gem "tilt", tilt_version
   end
