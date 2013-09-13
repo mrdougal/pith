@@ -188,6 +188,7 @@ module Pith
       end
     end
 
+    YamlParseError = defined?(Psych::SyntaxError) ? Psych::SyntaxError : ArgumentError
 
     def read_meta(io)
       header = io.gets
@@ -198,17 +199,12 @@ module Pith
         end
         begin
           @meta = YAML.load(header)
-        rescue yaml_parse_error
+        rescue YamlParseError
           logger.warn "#{file}:1: badly-formed YAML header"
         end
       else
         io.rewind
       end
-    end
-    
-    # This is a workaround for ruby 1.9.2
-    def yaml_parse_error
-      defined?(Psych::SyntaxError) ? Psych::SyntaxError : ArgumentError
     end
 
     # Note that the input file has changed, so we'll need to re-load it.
