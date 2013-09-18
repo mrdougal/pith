@@ -40,7 +40,4 @@ Scenario: link with title and class attributes
   And input file "page.html" exists
 
   When I build the site
-  Then output file "index.html" should contain
-    """
-    <a title="click me" class="active" href="page.html">Page</a>
-    """
+  Then output file "index.html" should contain /<a [title="click me", class="active", href="page.html"]/
