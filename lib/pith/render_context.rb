@@ -32,9 +32,9 @@ module Pith
 
     def render(input, locals = {}, &block)
       with_input(input) do
-        result = input.render(self, locals, &block)
+        result     = input.render(self, locals, &block)
         layout_ref = input.meta["layout"]
-        result = render_ref(layout_ref) { result } if layout_ref
+        result     = render_ref(layout_ref) { result } if layout_ref
         result
       end
     end
@@ -65,13 +65,13 @@ module Pith
       relative_url_to(resolve_reference(target_ref))
     end
 
-    def link(target_ref, label = nil)
+    def link(target_ref, label = nil, attrs={})
 
       if absolute_url? target_ref
-        url = target_ref
+        attrs['href'] = target_ref
       else
         target_path = resolve_reference(target_ref)
-        url = relative_url_to(target_path)
+        attrs['href'] = relative_url_to(target_path)
       end
 
       label ||= begin
@@ -81,8 +81,14 @@ module Pith
       rescue ReferenceError
         "???"
       end
-
-      %{<a href="#{url}">#{label}</a>}
+      
+      # Loop through attrs hash, flatten the key, value
+      # pairs for appending to the dom element/link
+      attrs_flatten = attrs.each_pair.collect do |key, value|
+                        %Q{#{key}="#{value}"}
+                      end.join(' ')
+      
+      "<a #{attrs_flatten}>#{label}</a>"
     end
 
     private
